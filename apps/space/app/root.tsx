@@ -24,8 +24,8 @@ import interVariableWoff2 from "@fontsource-variable/inter/files/inter-latin-wgh
 import "@fontsource/material-symbols-rounded";
 import "@fontsource/ibm-plex-mono";
 
-const APP_TITLE = "Plane Publish | Make your Plane boards public with one-click";
-const APP_DESCRIPTION = "Plane Publish is a customer feedback management tool built on top of plane.so";
+const APP_TITLE = "DeployFlow Publish | Share your boards publicly";
+const APP_DESCRIPTION = "DeployFlow Publish lets you share project boards and roadmaps publicly";
 
 export const links: Route.LinksFunction = () => [
   { rel: "apple-touch-icon", sizes: "180x180", href: appleTouchIcon },
@@ -78,9 +78,9 @@ export const meta: Route.MetaFunction = () => [
   {
     name: "keywords",
     content:
-      "software development, customer feedback, software, accelerate, code management, release management, project management, work item tracking, agile, scrum, kanban, collaboration",
+      "web3, blockchain, smart contracts, project management, audit tracking, defi, dao, governance, deployment, ethereum, polygon, arbitrum, cross-chain",
   },
-  { name: "twitter:site", content: "@planepowers" },
+  { name: "twitter:site", content: "@deployflow" },
 ];
 
 export default function Root() {

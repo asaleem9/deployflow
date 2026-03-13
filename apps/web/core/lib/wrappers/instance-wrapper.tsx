@@ -41,8 +41,7 @@ const InstanceWrapper = observer(function InstanceWrapper(props: TInstanceWrappe
   // something went wrong while in the request
   if (error && error?.status === "error") return <>{children}</>;
 
-  // instance is not ready and setup is not done
-  if (instance?.is_setup_done === false) return <InstanceNotReady />;
+  // instance is not ready — show the app anyway (auto-setup handles this)
 
   return <>{children}</>;
 });

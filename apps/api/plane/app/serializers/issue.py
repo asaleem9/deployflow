@@ -65,6 +65,7 @@ class IssueFlatSerializer(BaseSerializer):
             "sequence_id",
             "sort_order",
             "is_draft",
+            "web3_properties",
         ]
 
 

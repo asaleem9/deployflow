@@ -47,6 +47,7 @@ import { IssueCycleSelect } from "./cycle-select";
 import { IssueLabel } from "./label";
 import { IssueModuleSelect } from "./module-select";
 import type { TIssueOperations } from "./root";
+import { Web3PropertiesSection } from "./web3-properties/root";
 
 type Props = {
   workspaceSlug: string;
@@ -274,6 +275,16 @@ export const IssueDetailsSidebar = observer(function IssueDetailsSidebar(props: 
               isEditable={isEditable}
             />
           </div>
+
+          <Web3PropertiesSection
+            web3Properties={issue.web3_properties}
+            onChange={(web3Props) =>
+              issueOperations.update(workspaceSlug, projectId, issueId, {
+                web3_properties: { ...(issue.web3_properties ?? {}), ...web3Props },
+              })
+            }
+            disabled={!isEditable}
+          />
         </div>
       </div>
     </>

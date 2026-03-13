@@ -32,6 +32,7 @@ from plane.db.models import (
     IssueLabel,
     IssueSequence,
     IssueActivity,
+    IssueType,
     Page,
     ProjectPage,
     Cycle,
@@ -41,6 +42,7 @@ from plane.db.models import (
     IssueView,
     User,
     BotTypeEnum,
+    ProjectTemplate,
 )
 
 logger = logging.getLogger("plane.worker")
@@ -500,6 +502,166 @@ def create_views(workspace: Workspace, project_map: Dict[int, uuid.UUID], bot_us
         issue_view.save(created_by_id=bot_user.id, disable_auto_set_user=True)
 
 
+WEB3_ISSUE_TYPES = [
+    {
+        "name": "Smart Contract Implementation",
+        "description": "Development of new smart contracts or modifications to existing ones",
+        "logo_props": {"icon": {"name": "code", "color": "#627EEA"}},
+        "is_default": True,
+        "level": 0,
+    },
+    {
+        "name": "Audit Finding",
+        "description": "Issues discovered during security audits that need resolution",
+        "logo_props": {"icon": {"name": "shield", "color": "#D4382C"}},
+        "is_default": False,
+        "level": 0,
+    },
+    {
+        "name": "Tokenomics Design",
+        "description": "Token economic model design, supply mechanics, and distribution planning",
+        "logo_props": {"icon": {"name": "pie-chart", "color": "#F59E0B"}},
+        "is_default": False,
+        "level": 0,
+    },
+    {
+        "name": "Governance/Proposal",
+        "description": "DAO governance proposals, voting mechanisms, and governance framework changes",
+        "logo_props": {"icon": {"name": "vote", "color": "#7B61FF"}},
+        "is_default": False,
+        "level": 0,
+    },
+    {
+        "name": "Multi-Chain Deployment",
+        "description": "Deploying contracts across multiple blockchain networks",
+        "logo_props": {"icon": {"name": "layers", "color": "#46A758"}},
+        "is_default": False,
+        "level": 0,
+    },
+    {
+        "name": "Gas Optimization",
+        "description": "Optimizing smart contract gas consumption and transaction costs",
+        "logo_props": {"icon": {"name": "zap", "color": "#E07C24"}},
+        "is_default": False,
+        "level": 0,
+    },
+    {
+        "name": "Cross-Chain Integration",
+        "description": "Bridge integrations, cross-chain messaging, and interoperability work",
+        "logo_props": {"icon": {"name": "link", "color": "#8FA8F8"}},
+        "is_default": False,
+        "level": 0,
+    },
+]
+
+WEB3_LABELS = {
+    "Audit Severity": {
+        "color": "#D4382C",
+        "children": [
+            {"name": "critical", "color": "#DC2626"},
+            {"name": "high", "color": "#EA580C"},
+            {"name": "medium", "color": "#F59E0B"},
+            {"name": "low", "color": "#627EEA"},
+            {"name": "informational", "color": "#9AA4BC"},
+        ],
+    },
+    "Deployment": {
+        "color": "#46A758",
+        "children": [
+            {"name": "testnet-only", "color": "#7B61FF"},
+            {"name": "mainnet-ready", "color": "#46A758"},
+            {"name": "cross-chain", "color": "#8FA8F8"},
+        ],
+    },
+    "Requirements": {
+        "color": "#E07C24",
+        "children": [
+            {"name": "gas-optimization", "color": "#F59E0B"},
+            {"name": "multi-sig-required", "color": "#D4382C"},
+            {"name": "governance-vote-needed", "color": "#7B61FF"},
+        ],
+    },
+    "Chains": {
+        "color": "#627EEA",
+        "children": [
+            {"name": "ethereum", "color": "#627EEA"},
+            {"name": "polygon", "color": "#8247E5"},
+            {"name": "arbitrum", "color": "#28A0F0"},
+            {"name": "optimism", "color": "#FF0420"},
+            {"name": "base", "color": "#0052FF"},
+            {"name": "solana", "color": "#9945FF"},
+        ],
+    },
+}
+
+
+def seed_web3_issue_types(workspace: Workspace, bot_user: User) -> None:
+    """Seeds web3 issue types for the workspace."""
+    for issue_type_data in WEB3_ISSUE_TYPES:
+        IssueType.objects.get_or_create(
+            workspace=workspace,
+            name=issue_type_data["name"],
+            defaults={
+                "description": issue_type_data["description"],
+                "logo_props": issue_type_data["logo_props"],
+                "is_default": issue_type_data["is_default"],
+                "level": issue_type_data["level"],
+                "created_by_id": bot_user.id,
+            },
+        )
+    logger.info(f"Task: workspace_seed_task -> Web3 issue types seeded for workspace {workspace.id}")
+
+
+def seed_web3_labels(workspace: Workspace, bot_user: User) -> None:
+    """Seeds web3 labels for the workspace."""
+    sort_order = 1000
+    for parent_name, parent_data in WEB3_LABELS.items():
+        parent_label, _ = Label.objects.get_or_create(
+            workspace=workspace,
+            name=parent_name,
+            project=None,
+            defaults={
+                "color": parent_data["color"],
+                "sort_order": sort_order,
+                "created_by_id": bot_user.id,
+            },
+        )
+        sort_order += 1000
+        for child_data in parent_data["children"]:
+            Label.objects.get_or_create(
+                workspace=workspace,
+                name=child_data["name"],
+                parent=parent_label,
+                project=None,
+                defaults={
+                    "color": child_data["color"],
+                    "sort_order": sort_order,
+                    "created_by_id": bot_user.id,
+                },
+            )
+            sort_order += 1000
+    logger.info(f"Task: workspace_seed_task -> Web3 labels seeded for workspace {workspace.id}")
+
+
+def seed_web3_templates() -> None:
+    """Seeds web3 project templates if they don't exist."""
+    from plane.db.management.commands.seed_web3_templates import WEB3_TEMPLATES
+
+    for template_data in WEB3_TEMPLATES:
+        ProjectTemplate.objects.get_or_create(
+            name=template_data["name"],
+            defaults={
+                "description": template_data["description"],
+                "icon": template_data["icon"],
+                "sort_order": template_data["sort_order"],
+                "states_config": template_data["states_config"],
+                "labels_config": template_data["labels_config"],
+                "issue_types_config": template_data["issue_types_config"],
+            },
+        )
+    logger.info("Task: workspace_seed_task -> Web3 project templates seeded")
+
+
 @shared_task
 def workspace_seed(workspace_id: uuid.UUID) -> None:
     """Seeds a new workspace with initial project data.
@@ -562,6 +724,13 @@ def workspace_seed(workspace_id: uuid.UUID) -> None:
 
         # create project pages
         create_pages(workspace, project_map, bot_user)
+
+        # Seed web3 issue types and labels for the workspace
+        seed_web3_issue_types(workspace, bot_user)
+        seed_web3_labels(workspace, bot_user)
+
+        # Seed global web3 project templates (idempotent)
+        seed_web3_templates()
 
         logger.info(f"Task: workspace_seed_task -> Workspace {workspace_id} seeded successfully")
         return

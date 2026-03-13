@@ -351,6 +351,29 @@ export const SPREADSHEET_PROPERTY_DETAILS: {
   },
 };
 
+// Web3 chain options
+export const WEB3_CHAIN_OPTIONS = [
+  { key: "ethereum", title: "Ethereum" },
+  { key: "polygon", title: "Polygon" },
+  { key: "arbitrum", title: "Arbitrum" },
+  { key: "optimism", title: "Optimism" },
+  { key: "base", title: "Base" },
+  { key: "solana", title: "Solana" },
+] as const;
+
+export const WEB3_NETWORK_TYPES = [
+  { key: "mainnet", title: "Mainnet" },
+  { key: "testnet", title: "Testnet" },
+  { key: "devnet", title: "Devnet" },
+] as const;
+
+export const WEB3_AUDIT_STATUSES = [
+  { key: "not_started", title: "Not Started" },
+  { key: "in_progress", title: "In Progress" },
+  { key: "completed", title: "Completed" },
+  { key: "failed", title: "Failed" },
+] as const;
+
 // Map filter keys to their corresponding issue property keys
 export const FILTER_TO_ISSUE_MAP: Partial<Record<keyof IIssueFilterOptions, keyof TIssue>> = {
   assignees: "assignee_ids",

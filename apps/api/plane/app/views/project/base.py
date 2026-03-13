@@ -33,6 +33,7 @@ from plane.db.models import (
     ProjectIdentifier,
     ProjectMember,
     ProjectNetwork,
+    ProjectTemplate,
     ProjectUserProperty,
     State,
     DEFAULT_STATES,
@@ -273,19 +274,39 @@ class ProjectViewSet(BaseViewSet):
                     role=ROLE.ADMIN.value,
                 )
 
+            # Use template states if template_id provided, otherwise use defaults
+            template_id = request.data.get("template_id")
+            states_to_create = DEFAULT_STATES
+            if template_id:
+                try:
+                    template = ProjectTemplate.objects.get(id=template_id, is_active=True)
+                    if template.states_config:
+                        states_to_create = [
+                            {
+                                "name": s["name"],
+                                "color": s.get("color", "#627EEA"),
+                                "sequence": 15000 + (i * 5000),
+                                "group": s.get("group", "backlog"),
+                                "default": s.get("default", False),
+                            }
+                            for i, s in enumerate(template.states_config)
+                        ]
+                except ProjectTemplate.DoesNotExist:
+                    pass
+
             State.objects.bulk_create(
                 [
                     State(
                         name=state["name"],
                         color=state["color"],
                         project=serializer.instance,
-                        sequence=state["sequence"],
+                        sequence=state.get("sequence", 15000),
                         workspace=serializer.instance.workspace,
                         group=state["group"],
                         default=state.get("default", False),
                         created_by=request.user,
                     )
-                    for state in DEFAULT_STATES
+                    for state in states_to_create
                 ]
             )
 

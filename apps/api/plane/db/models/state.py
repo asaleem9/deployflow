@@ -20,43 +20,97 @@ class StateGroup(models.TextChoices):
     TRIAGE = "triage", "Triage"
 
 
-# Default states
+# Default states — Web3 development workflow
 DEFAULT_STATES = [
+    # Backlog
     {
-        "name": "Backlog",
-        "color": "#60646C",
+        "name": "Specification/Design",
+        "color": "#627EEA",
         "sequence": 15000,
         "group": StateGroup.BACKLOG.value,
         "default": True,
     },
+    # Unstarted
     {
-        "name": "Todo",
-        "color": "#60646C",
-        "sequence": 25000,
+        "name": "Governance Review",
+        "color": "#8FA8F8",
+        "sequence": 20000,
         "group": StateGroup.UNSTARTED.value,
     },
+    # Started
     {
-        "name": "In Progress",
+        "name": "Development",
         "color": "#F59E0B",
+        "sequence": 25000,
+        "group": StateGroup.STARTED.value,
+    },
+    {
+        "name": "Internal Testing",
+        "color": "#F59E0B",
+        "sequence": 30000,
+        "group": StateGroup.STARTED.value,
+    },
+    {
+        "name": "Audit Readiness",
+        "color": "#E07C24",
         "sequence": 35000,
         "group": StateGroup.STARTED.value,
     },
     {
-        "name": "Done",
-        "color": "#46A758",
+        "name": "Under Audit",
+        "color": "#D4382C",
+        "sequence": 40000,
+        "group": StateGroup.STARTED.value,
+    },
+    {
+        "name": "Audit Review",
+        "color": "#E07C24",
         "sequence": 45000,
+        "group": StateGroup.STARTED.value,
+    },
+    {
+        "name": "Testnet Staging",
+        "color": "#7B61FF",
+        "sequence": 50000,
+        "group": StateGroup.STARTED.value,
+    },
+    {
+        "name": "Community Testing",
+        "color": "#7B61FF",
+        "sequence": 55000,
+        "group": StateGroup.STARTED.value,
+    },
+    # Completed
+    {
+        "name": "Mainnet Ready",
+        "color": "#46A758",
+        "sequence": 60000,
         "group": StateGroup.COMPLETED.value,
     },
     {
+        "name": "Mainnet Deployed",
+        "color": "#46A758",
+        "sequence": 65000,
+        "group": StateGroup.COMPLETED.value,
+    },
+    {
+        "name": "Post-Launch Monitoring",
+        "color": "#46A758",
+        "sequence": 70000,
+        "group": StateGroup.COMPLETED.value,
+    },
+    # Cancelled
+    {
         "name": "Cancelled",
         "color": "#9AA4BC",
-        "sequence": 55000,
+        "sequence": 75000,
         "group": StateGroup.CANCELLED.value,
     },
+    # Triage
     {
         "name": "Triage",
         "color": "#4E5355",
-        "sequence": 65000,
+        "sequence": 80000,
         "group": StateGroup.TRIAGE.value,
     },
 ]

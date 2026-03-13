@@ -69,7 +69,7 @@ class InstanceEndpoint(BaseAPIView):
             [
                 {
                     "key": "ENABLE_SIGNUP",
-                    "default": os.environ.get("ENABLE_SIGNUP", "0"),
+                    "default": os.environ.get("ENABLE_SIGNUP", "1"),
                 },
                 {
                     "key": "DISABLE_WORKSPACE_CREATION",

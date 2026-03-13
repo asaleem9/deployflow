@@ -4,20 +4,20 @@
  * See the LICENSE file for details.
  */
 
-export const SITE_NAME = "Plane | Simple, extensible, open-source project management tool.";
-export const SITE_TITLE = "Plane | Simple, extensible, open-source project management tool.";
+export const SITE_NAME = "DeployFlow | Web3 Project Management";
+export const SITE_TITLE = "DeployFlow | Web3 Project Management";
 export const SITE_DESCRIPTION =
-  "Open-source project management tool to manage work items, cycles, and product roadmaps easily";
+  "Web3 project management tool for smart contract development, audits, and multi-chain deployments";
 export const SITE_KEYWORDS =
-  "software development, plan, ship, software, accelerate, code management, release management, project management, work items tracking, agile, scrum, kanban, collaboration";
+  "web3, blockchain, smart contracts, project management, audit tracking, defi, dao, governance, deployment, ethereum, polygon, arbitrum, cross-chain";
 export const SITE_URL = "https://app.plane.so/";
-export const TWITTER_USER_NAME = "Plane | Simple, extensible, open-source project management tool.";
+export const TWITTER_USER_NAME = "DeployFlow | Web3 Project Management";
 
-// Plane Sites Metadata
-export const SPACE_SITE_NAME = "Plane Publish | Make your Plane boards and roadmaps pubic with just one-click. ";
-export const SPACE_SITE_TITLE = "Plane Publish | Make your Plane boards public with one-click";
-export const SPACE_SITE_DESCRIPTION = "Plane Publish is a customer feedback management tool built on top of plane.so";
+// DeployFlow Publish Metadata
+export const SPACE_SITE_NAME = "DeployFlow Publish | Share your DeployFlow boards publicly";
+export const SPACE_SITE_TITLE = "DeployFlow Publish | Share your boards publicly";
+export const SPACE_SITE_DESCRIPTION = "DeployFlow Publish lets you share project boards and roadmaps publicly";
 export const SPACE_SITE_KEYWORDS =
   "software development, customer feedback, software, accelerate, code management, release management, project management, work items tracking, agile, scrum, kanban, collaboration";
 export const SPACE_SITE_URL = "https://app.plane.so/";
-export const SPACE_TWITTER_USER_NAME = "planepowers";
+export const SPACE_TWITTER_USER_NAME = "deployflow";

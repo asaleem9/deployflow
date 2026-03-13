@@ -18,6 +18,9 @@ export const coreRoutes: RouteConfigEntry[] = [
   // Sign Up
   layout("./(all)/sign-up/layout.tsx", [route("sign-up", "./(all)/sign-up/page.tsx")]),
 
+  // Sign In
+  layout("./(all)/sign-in/layout.tsx", [route("sign-in", "./(all)/sign-in/page.tsx")]),
+
   // Account Routes - Password Management
   layout("./(all)/accounts/forgot-password/layout.tsx", [
     route("accounts/forgot-password", "./(all)/accounts/forgot-password/page.tsx"),
@@ -389,8 +392,7 @@ export const coreRoutes: RouteConfigEntry[] = [
   // Sign-up redirects
   route("accounts/sign-up", "routes/redirects/core/accounts-signup.tsx"),
 
-  // Sign-in redirects (all redirect to home page)
-  route("sign-in", "routes/redirects/core/sign-in.tsx"),
+  // Sign-in redirects (redirect to /sign-in)
   route("signin", "routes/redirects/core/signin.tsx"),
   route("login", "routes/redirects/core/login.tsx"),
 

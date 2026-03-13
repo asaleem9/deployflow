@@ -166,6 +166,7 @@ class Issue(ProjectBaseModel):
         null=True,
         blank=True,
     )
+    web3_properties = models.JSONField(default=dict, blank=True)
 
     issue_objects = IssueManager()
 

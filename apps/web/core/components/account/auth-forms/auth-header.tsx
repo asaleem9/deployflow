@@ -27,30 +27,30 @@ type TAuthHeader = {
 const Titles = {
   [EAuthModes.SIGN_IN]: {
     [EAuthSteps.EMAIL]: {
-      header: "Work in all dimensions.",
-      subHeader: "Welcome back to Plane.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Welcome back to DeployFlow.",
     },
     [EAuthSteps.PASSWORD]: {
-      header: "Work in all dimensions.",
-      subHeader: "Welcome back to Plane.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Welcome back to DeployFlow.",
     },
     [EAuthSteps.UNIQUE_CODE]: {
-      header: "Work in all dimensions.",
-      subHeader: "Welcome back to Plane.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Welcome back to DeployFlow.",
     },
   },
   [EAuthModes.SIGN_UP]: {
     [EAuthSteps.EMAIL]: {
-      header: "Work in all dimensions.",
-      subHeader: "Create your Plane account.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Create your DeployFlow account.",
     },
     [EAuthSteps.PASSWORD]: {
-      header: "Work in all dimensions.",
-      subHeader: "Create your Plane account.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Create your DeployFlow account.",
     },
     [EAuthSteps.UNIQUE_CODE]: {
-      header: "Work in all dimensions.",
-      subHeader: "Create your Plane account.",
+      header: "Ship on-chain with confidence.",
+      subHeader: "Create your DeployFlow account.",
     },
   },
 };

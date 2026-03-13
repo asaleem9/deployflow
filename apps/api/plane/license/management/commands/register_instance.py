@@ -65,11 +65,12 @@ class Command(BaseCommand):
                 raise CommandError("Machine signature is required")
 
             instance = Instance.objects.create(
-                instance_name="Plane Community Edition",
+                instance_name="DeployFlow",
                 instance_id=secrets.token_hex(12),
                 current_version=current_version,
                 latest_version=latest_version,
                 last_checked_at=timezone.now(),
+                is_setup_done=True,
                 is_test=os.environ.get("IS_TEST", "0") == "1",
                 edition=InstanceEdition.PLANE_COMMUNITY.value,
             )

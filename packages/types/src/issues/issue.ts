@@ -77,6 +77,21 @@ export type TBaseIssue = {
   is_draft: boolean;
   is_epic?: boolean;
   is_intake?: boolean;
+
+  web3_properties?: TWeb3Properties;
+};
+
+export type TWeb3Properties = {
+  chain_name?: string;
+  network_type?: "mainnet" | "testnet" | "devnet";
+  contract_address?: string;
+  audit_status?: "not_started" | "in_progress" | "completed" | "failed";
+  gas_metrics?: {
+    deployment_gas?: number;
+    avg_transaction_gas?: number;
+    optimization_notes?: string;
+  };
+  deployment_date?: string;
 };
 
 type IssueRelation = {
