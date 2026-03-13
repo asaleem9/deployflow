@@ -32,7 +32,7 @@
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "catalog:",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "catalog:",
-    "@blueprintjs/core": "^4.16.3",
+    "@blueprintjs/core": "^6.10.0",
     "@blueprintjs/popover2": "^1.13.3",
     "@headlessui/react": "^1.7.3",
     "@plane/constants": "workspace:*",
