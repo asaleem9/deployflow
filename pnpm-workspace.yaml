@@ -17,7 +17,7 @@ catalog:
   "@tiptap/html": ^2.22.3
   "@types/lodash-es": 4.17.12
   "@types/node": 22.12.0
-  "@types/react-dom": 18.3.1
+  "@types/react-dom": 19.2.3
   "@types/react": 18.3.11
   axios: 1.13.5
   express: 4.22.0
@@ -26,7 +26,7 @@ catalog:
   mobx-react: 9.1.1
   mobx-utils: 6.0.8
   mobx: 6.12.0
-  react-dom: 18.3.1
+  react-dom: 19.2.4
   react-router: 7.12.0
   react: 18.3.1
   swr: 2.2.4
