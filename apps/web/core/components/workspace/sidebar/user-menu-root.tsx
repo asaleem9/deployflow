@@ -21,6 +21,7 @@ import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useUser } from "@/hooks/store/user";
+import { isDemoUser, exitDemoTo } from "@/plane-web/components/demo/demo.utils";
 
 export const UserMenuRoot = observer(function UserMenuRoot() {
   // states
@@ -37,7 +38,15 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
   // translation
   const { t } = useTranslation();
 
+  // The demo account isn't the visitor's own — "signing out" of it is confusing,
+  // so demo users get "Exit demo" (drop the shared session, back to the home page).
+  const demo = isDemoUser(currentUser);
+
   const handleSignOut = () => {
+    if (demo) {
+      void exitDemoTo("/");
+      return;
+    }
     signOut().catch(() =>
       setToast({
         type: TOAST_TYPE.ERROR,
@@ -135,7 +144,7 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
       </div>
       <CustomMenu.MenuItem onClick={handleSignOut} className="flex items-center gap-2">
         <LogOut className="size-3.5 shrink-0" />
-        {t("sign_out")}
+        {demo ? "Exit demo" : t("sign_out")}
       </CustomMenu.MenuItem>
       {isUserInstanceAdmin && (
         <CustomMenu.MenuItem

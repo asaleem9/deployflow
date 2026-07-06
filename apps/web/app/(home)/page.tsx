@@ -16,6 +16,8 @@ import { Landing } from "@/plane-web/components/marketing/landing";
 import { EAuthModes, EPageTypes } from "@/helpers/authentication.helper";
 // hooks
 import { useUser, useUserSettings } from "@/hooks/store/user";
+// demo
+import { isDemoUser } from "@/plane-web/components/demo/demo.utils";
 // layouts
 import DefaultLayout from "@/layouts/default-layout";
 // wrappers
@@ -39,12 +41,19 @@ const HomePage = observer(() => {
   // Adapt the landing nav: signed-in visitors get "Open app" into their last
   // workspace; everyone else gets "Sign in".
   const isAuthenticated = !!currentUser?.id;
+  const isDemo = isDemoUser(currentUser);
   const lastWorkspace =
     userSettings?.workspace?.last_workspace_slug || userSettings?.workspace?.fallback_workspace_slug;
   const appHref = lastWorkspace ? `/${lastWorkspace}` : "/create-workspace";
 
   const tryDemo = async () => {
     if (demoLoading) return;
+    // Already in the demo? Just go back into it — don't re-run the login (which
+    // looked like the homepage merely reloading).
+    if (isDemo) {
+      window.location.href = appHref;
+      return;
+    }
     setDemoLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/auth/demo-login/`, {
@@ -78,6 +87,7 @@ const HomePage = observer(() => {
           onTryDemo={tryDemo}
           demoLoading={demoLoading}
           isAuthenticated={isAuthenticated}
+          isDemo={isDemo}
           appHref={appHref}
         />
       </AuthenticationWrapper>

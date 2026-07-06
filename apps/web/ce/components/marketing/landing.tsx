@@ -64,16 +64,24 @@ const FEATURES = [
 ];
 
 type LandingProps = {
-  /** Kicks off the anonymous demo session. */
+  /** Kicks off the anonymous demo session (or re-enters it for a demo user). */
   onTryDemo: () => void;
   demoLoading?: boolean;
-  /** When the visitor is already signed in, the nav offers "Open app" instead. */
+  /** When the visitor is already signed in, the CTAs become "Open app". */
   isAuthenticated?: boolean;
-  /** Where "Open app" points (their last workspace, or create-workspace). */
+  /** When the visitor is the shared demo account, CTAs become demo-aware. */
+  isDemo?: boolean;
+  /** Where "Open app" / "Back to the demo" points. */
   appHref?: string;
 };
 
-export function Landing({ onTryDemo, demoLoading, isAuthenticated = false, appHref = "/" }: LandingProps) {
+export function Landing({
+  onTryDemo,
+  demoLoading,
+  isAuthenticated = false,
+  isDemo = false,
+  appHref = "/",
+}: LandingProps) {
   const root = useRef<HTMLDivElement>(null);
   const [navSolid, setNavSolid] = useState(false);
 
@@ -212,7 +220,23 @@ export function Landing({ onTryDemo, demoLoading, isAuthenticated = false, appHr
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <PlaneLockup height={28} width={132} className="text-primary" />
           <div className="flex items-center gap-3">
-            {isAuthenticated ? (
+            {isDemo ? (
+              <>
+                <Link
+                  to="/sign-in"
+                  className="hidden rounded-lg px-4 py-2 text-body-sm-medium text-secondary transition-colors hover:text-primary sm:block"
+                >
+                  Sign up free
+                </Link>
+                <Link
+                  to={appHref}
+                  className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-cta px-4 py-2 text-body-sm-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03]"
+                >
+                  Back to the demo
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </>
+            ) : isAuthenticated ? (
               <Link
                 to={appHref}
                 className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-cta px-4 py-2 text-body-sm-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03]"
@@ -266,21 +290,49 @@ export function Landing({ onTryDemo, demoLoading, isAuthenticated = false, appHr
           wallet sign-in, and bounties, in one workspace.
         </p>
         <div data-hero-fade className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-          <button
-            type="button"
-            onClick={onTryDemo}
-            disabled={demoLoading}
-            className="group inline-flex items-center gap-2 rounded-md bg-gradient-cta px-6 py-3.5 text-body-md-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03] disabled:opacity-70"
-          >
-            {demoLoading ? "Loading demo…" : "Explore the live demo"}
-            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-          </button>
-          <Link
-            to="/sign-in"
-            className="rounded-md border border-strong bg-layer-1 px-6 py-3.5 text-body-md-medium text-primary transition-colors hover:bg-layer-1-hover"
-          >
-            Get started free
-          </Link>
+          {isDemo ? (
+            <>
+              <Link
+                to={appHref}
+                className="group inline-flex items-center gap-2 rounded-md bg-gradient-cta px-6 py-3.5 text-body-md-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03]"
+              >
+                Back to the demo
+                <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/sign-in"
+                className="rounded-md border border-strong bg-layer-1 px-6 py-3.5 text-body-md-medium text-primary transition-colors hover:bg-layer-1-hover"
+              >
+                Sign up for a real account
+              </Link>
+            </>
+          ) : isAuthenticated ? (
+            <Link
+              to={appHref}
+              className="group inline-flex items-center gap-2 rounded-md bg-gradient-cta px-6 py-3.5 text-body-md-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03]"
+            >
+              Open app
+              <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={onTryDemo}
+                disabled={demoLoading}
+                className="group inline-flex items-center gap-2 rounded-md bg-gradient-cta px-6 py-3.5 text-body-md-semibold text-white shadow-glow-brand transition-transform hover:scale-[1.03] disabled:opacity-70"
+              >
+                {demoLoading ? "Loading demo…" : "Explore the live demo"}
+                <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+              </button>
+              <Link
+                to="/sign-in"
+                className="rounded-md border border-strong bg-layer-1 px-6 py-3.5 text-body-md-medium text-primary transition-colors hover:bg-layer-1-hover"
+              >
+                Get started free
+              </Link>
+            </>
+          )}
         </div>
 
         {/* contract card mock — a terminal/spec panel, not a glass bubble */}

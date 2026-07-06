@@ -10,6 +10,7 @@ import { WorkspaceContentWrapper } from "@/plane-web/components/workspace/conten
 import { AppRailVisibilityProvider } from "@/lib/app-rail";
 import { GlobalModals } from "@/plane-web/components/common/modal/global";
 import { WorkspaceAuthWrapper } from "@/layouts/auth-layout/workspace-wrapper";
+import { DemoModeBanner } from "@/plane-web/components/demo/demo-banner";
 import type { Route } from "./+types/layout";
 
 export default function WorkspaceLayout(props: Route.ComponentProps) {
@@ -24,6 +25,8 @@ export default function WorkspaceLayout(props: Route.ComponentProps) {
             <Outlet />
           </WorkspaceContentWrapper>
         </AppRailVisibilityProvider>
+        {/* Floating "you're in the demo" banner — renders only for the demo user. */}
+        <DemoModeBanner />
       </WorkspaceAuthWrapper>
     </AuthenticationWrapper>
   );
