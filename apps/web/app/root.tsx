@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Script from "next/script";
 import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { LinksFunction } from "react-router";
-import { ThemeProvider, useTheme } from "next-themes";
+import { ThemeProvider } from "next-themes";
 // deployflow imports
 import { SITE_DESCRIPTION, SITE_NAME } from "@plane/constants";
 import { cn } from "@plane/utils";
@@ -134,10 +134,16 @@ export default function Root() {
 }
 
 export function HydrateFallback() {
-  const { resolvedTheme } = useTheme();
+  // The prerendered shell renders an empty <div/> (this component runs on the
+  // server before `window` exists). next-themes resolves the theme synchronously
+  // on the client, so a `typeof window`/`resolvedTheme` guard would render the
+  // spinner on the very first client paint and mismatch the empty prerendered div,
+  // cascading into a full hydration failure. Gate on mount instead: render the
+  // same empty <div/> the server produced, then reveal the spinner after hydration.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  // if we are on the server or the theme is not resolved, return an empty div
-  if (typeof window === "undefined" || resolvedTheme === undefined) return <div />;
+  if (!mounted) return <div />;
 
   return (
     <div className="relative flex h-screen w-full items-center justify-center bg-canvas">
