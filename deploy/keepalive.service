@@ -1,0 +1,22 @@
+# Copyright (c) 2026 DeployFlow contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Keeps an Oracle Cloud "Always Free" instance above the idle-reclaim threshold.
+# Oracle reclaims free VMs whose 95th-percentile CPU stays under 20% for 7 days.
+# The rule is satisfied if CPU exceeds 20% for >=5% of the week (~8.5h). This unit
+# runs a low-priority CPU load (invisible to the real workload via nice 19) that,
+# on the twice-daily timer, lands ~17.5h/week above the line — double the margin.
+#
+# Install: copy this + keepalive.timer to /etc/systemd/system/, then
+#   sudo systemctl daemon-reload && sudo systemctl enable --now keepalive.timer
+# Prefer upgrading the account to Pay-As-You-Go (still $0 in free limits) to be
+# exempt from reclaim entirely; keep this as belt-and-suspenders.
+
+[Unit]
+Description=DeployFlow Oracle keep-alive CPU load
+
+[Service]
+Type=oneshot
+Nice=19
+# ~30% of a 2-OCPU shape for 75 minutes. Needs stress-ng (apt install stress-ng).
+ExecStart=/usr/bin/stress-ng --cpu 1 --cpu-load 60 --timeout 75m

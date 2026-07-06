@@ -1,0 +1,20 @@
+DeployFlow
+Copyright (c) 2026 DeployFlow contributors
+
+This product is a fork of Plane.
+Plane is Copyright (c) 2023-present Plane Software, Inc. and contributors,
+and is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only).
+
+DeployFlow is likewise distributed under the AGPL-3.0-only license. See the
+LICENSE.txt file for the full license text. Per section 13 of the AGPL, the
+complete corresponding source of this modified version is made available to all
+users who interact with it over a network, from the "Source code" link in the
+application and at the project's public repository.
+
+"Plane" and the Plane logo are trademarks of Plane Software, Inc. DeployFlow is
+not affiliated with, sponsored by, or endorsed by Plane Software, Inc. All Plane
+trademarks and brand assets have been removed from the user-facing surfaces of
+this fork; the upstream copyright notices and SPDX license identifiers in the
+source files are retained as required by the license.
+
+Upstream project: https://github.com/makeplane/plane

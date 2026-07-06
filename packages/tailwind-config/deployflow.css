@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2026 DeployFlow contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * See the LICENSE file for details.
+ *
+ * DeployFlow brand token layer. Imported AFTER variables.css so these values
+ * win the cascade. This file is intentionally ADDITIVE — it never edits
+ * variables.css in place, so upstream Plane merges only ever touch a single
+ * @import line in index.css. Two jobs:
+ *   1. Re-anchor the primitive scales (--brand-*, dark --neutral-*) so every
+ *      semantic token that references them re-skins at once.
+ *   2. Register new namespaces (gradients, glass, glow, motion, chain accents)
+ *      that the expressive DeployFlow surfaces consume.
+ */
+
+/* ============================================================
+ * 1. Primitive re-anchor — Volt Violet brand + violet-tinted dark canvas
+ * ============================================================ */
+
+:root {
+  /* Brand — Volt Violet, hue ~287. Light scale: 100 lightest → 1200 darkest. */
+  --brand-100: oklch(0.9720 0.0180 288);
+  --brand-200: oklch(0.9500 0.0340 288);
+  --brand-300: oklch(0.9080 0.0640 287);
+  --brand-400: oklch(0.8470 0.1120 287);
+  --brand-500: oklch(0.7760 0.1620 287);
+  --brand-600: oklch(0.7060 0.2000 287);
+  --brand-700: oklch(0.6560 0.2160 286);
+  --brand-800: oklch(0.5720 0.2020 286);
+  --brand-900: oklch(0.5000 0.1880 286);
+  --brand-1000: oklch(0.4200 0.1560 286);
+  --brand-1100: oklch(0.3400 0.1220 286);
+  --brand-1200: oklch(0.2700 0.0920 286);
+  --brand-default: oklch(0.6250 0.2100 285); /* ≈ #7C5CFF */
+
+  @variant dark {
+    /* Dark canvas — violet-tinted near-black.
+     * --bg-canvas→neutral-black (#0B0A12), surface-1→neutral-100 (#131120),
+     * surface-2→neutral-200 (#181627). Lower steps carry a faint violet tint;
+     * the text steps (800-1200) stay near-neutral for readability. */
+    --neutral-black: oklch(0.1500 0.0150 290);
+    --neutral-100: oklch(0.1930 0.0230 288);
+    --neutral-200: oklch(0.2200 0.0270 288);
+    --neutral-300: oklch(0.2470 0.0280 287);
+    --neutral-400: oklch(0.2750 0.0270 287);
+    --neutral-500: oklch(0.3150 0.0230 287);
+    --neutral-600: oklch(0.3600 0.0190 287);
+    --neutral-700: oklch(0.4200 0.0150 287);
+    --neutral-800: oklch(0.6050 0.0110 287);
+    --neutral-900: oklch(0.6900 0.0080 287);
+    --neutral-1000: oklch(0.7700 0.0055 287);
+    --neutral-1100: oklch(0.8500 0.0035 287);
+    --neutral-1200: oklch(0.9270 0.0020 287);
+
+    /* Brand — dark scale: 100 darkest → 1200 lightest (mirrors upstream). */
+    --brand-100: oklch(0.2200 0.0700 287);
+    --brand-200: oklch(0.2600 0.0900 287);
+    --brand-300: oklch(0.3300 0.1200 287);
+    --brand-400: oklch(0.4200 0.1600 287);
+    --brand-500: oklch(0.4700 0.1800 287);
+    --brand-600: oklch(0.5500 0.2000 287);
+    --brand-700: oklch(0.7200 0.1700 287);
+    --brand-800: oklch(0.8200 0.1100 287);
+    --brand-900: oklch(0.8900 0.0700 287);
+    --brand-1000: oklch(0.9400 0.0400 287);
+    --brand-1100: oklch(0.9700 0.0200 287);
+    --brand-1200: oklch(0.9850 0.0100 287);
+    --brand-default: oklch(0.6600 0.2000 286);
+  }
+}
+
+/* ============================================================
+ * 2. New namespaces — consumed only by expressive DeployFlow components.
+ *    Dense work views must NOT reference these (enforced by brand-lint).
+ * ============================================================ */
+
+@theme {
+  /* ---------- Gradients (→ bg-gradient-* utilities) ---------- */
+  --background-image-gradient-brand: linear-gradient(135deg, #6d5cff 0%, #a855f7 48%, #22d3ee 100%);
+  --background-image-gradient-cta: linear-gradient(120deg, #7c3aed 0%, #4f46e5 45%, #06b6d4 100%);
+  --background-image-gradient-aurora:
+    radial-gradient(60% 50% at 18% 8%, rgb(124 92 255 / 0.32), transparent 55%),
+    radial-gradient(50% 45% at 82% 0%, rgb(34 211 238 / 0.22), transparent 55%),
+    radial-gradient(55% 50% at 60% 95%, rgb(217 70 239 / 0.18), transparent 60%);
+  --background-image-gradient-severity-critical: linear-gradient(120deg, #fb7185, #f43f5e);
+  --background-image-gradient-severity-high: linear-gradient(120deg, #fbbf24, #f97316);
+  --background-image-gradient-severity-medium: linear-gradient(120deg, #facc15, #eab308);
+  --background-image-gradient-severity-low: linear-gradient(120deg, #38bdf8, #0ea5e9);
+
+  /* ---------- Glass surfaces ---------- */
+  --glass-bg-1: rgb(255 255 255 / 0.05);
+  --glass-bg-2: rgb(255 255 255 / 0.08);
+  --glass-border: rgb(255 255 255 / 0.12);
+  --glass-blur-sm: 12px;
+  --glass-blur-lg: 24px;
+
+  /* ---------- Elevation (dark-first glow) ---------- */
+  --shadow-glow-brand: 0 0 0 1px rgb(124 92 255 / 0.25), 0 8px 40px -8px rgb(124 92 255 / 0.35);
+  --shadow-glow-cyan: 0 0 0 1px rgb(34 211 238 / 0.25), 0 8px 40px -8px rgb(34 211 238 / 0.35);
+
+  /* ---------- Motion ---------- */
+  --motion-instant: 120ms;
+  --motion-fast: 200ms;
+  --motion-base: 320ms;
+  --motion-slow: 600ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---------- Reclaim radius (upstream sets --radius-4xl: initial) ---------- */
+  --radius-4xl: 2rem;
+
+  /* ---------- EVM network accents ---------- */
+  --color-chain-ethereum: #627eea;
+  --color-chain-polygon: #8247e5;
+  --color-chain-arbitrum: #28a0f0;
+  --color-chain-optimism: #ff0420;
+  --color-chain-base: #0052ff;
+
+  /* ---------- Font families (bundled variable fonts, no remote fetch) ---------- */
+  --font-heading:
+    "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-code:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+/* ============================================================
+ * 3. Expressive utilities
+ * ============================================================ */
+
+@utility glass-1 {
+  background: var(--glass-bg-1);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-2 {
+  background: var(--glass-bg-2);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  border: 1px solid var(--glass-border);
+}
+
+@utility text-gradient-brand {
+  background-image: var(--background-image-gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
