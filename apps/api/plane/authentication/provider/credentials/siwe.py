@@ -49,7 +49,9 @@ class SIWEProvider(CredentialAdapter):
                 "email": email,
                 "user": {
                     "avatar": "",
-                    "first_name": short_address(self.address),
+                    # Leave the name blank so onboarding asks for a real one rather
+                    # than pre-filling the registration field with the 0x address.
+                    "first_name": "",
                     "last_name": "",
                     "provider_id": self.address,
                     "is_password_autoset": True,

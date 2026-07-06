@@ -134,7 +134,10 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
           showDivider={isEmailBasedAuthEnabled}
         />
       )}
-      {authStep === EAuthSteps.EMAIL && <WalletSignIn nextPath="/" />}
+      {/* After a wallet sign-in, route into the app: /onboarding sends new users
+          through setup and bounces returning users to their workspace — never
+          back to the public marketing landing. */}
+      {authStep === EAuthSteps.EMAIL && <WalletSignIn nextPath="/onboarding" />}
       {isEmailBasedAuthEnabled && (
         <AuthFormRoot
           authStep={authStep}
