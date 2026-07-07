@@ -335,6 +335,12 @@ export function Landing({
           )}
         </div>
 
+        {!isAuthenticated && !isDemo ? (
+          <p data-hero-fade className="mt-4 text-caption-sm-regular text-tertiary">
+            No sign-up required — explore the full live workspace instantly.
+          </p>
+        ) : null}
+
         {/* contract card mock — a terminal/spec panel, not a glass bubble */}
         <div data-hero-fade className="mt-16 w-full max-w-2xl">
           <div data-hero-card className="rounded-md border border-strong bg-surface-1/80 backdrop-blur-xl">

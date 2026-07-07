@@ -76,6 +76,9 @@ class Command(BaseCommand):
         from plane.web3.models import Audit, ContractDeployment, TokenLaunch, Bounty
         from plane.db.models import Issue
 
+        from django.utils import timezone
+        from plane.db.models import Project
+
         AuditFinding.all_objects.filter(project=project).delete()
         Audit.all_objects.filter(project=project).delete()
         ContractDeployment.all_objects.filter(project=project).delete()
@@ -83,7 +86,16 @@ class Command(BaseCommand):
         TokenLaunch.all_objects.filter(project=project).delete()
         SmartContract.all_objects.filter(project=project).delete()
         Issue.all_objects.filter(project=project).delete()
-        self.stdout.write("  reset: cleared existing demo data")
+
+        # The demo workspace is a shared, writable sandbox, so visitors accumulate
+        # their own projects. Soft-delete everything except the curated Acme Vault
+        # so a scheduled reset always restores a clean showcase (hidden from the UI;
+        # Plane's own cleanup task hard-deletes them later).
+        extra = Project.objects.filter(workspace=project.workspace).exclude(id=project.id)
+        extra_count = extra.count()
+        if extra_count:
+            extra.update(deleted_at=timezone.now())
+        self.stdout.write(f"  reset: cleared demo data + {extra_count} visitor project(s)")
 
     # -- account -----------------------------------------------------------
 

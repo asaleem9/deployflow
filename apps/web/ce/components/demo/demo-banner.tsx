@@ -6,7 +6,8 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { Sparkles, ArrowRight, Minus } from "lucide-react";
+import { Link } from "react-router";
+import { Sparkles, ArrowRight, Minus, Home } from "lucide-react";
 // hooks
 import { useUser } from "@/hooks/store/user";
 // local
@@ -65,6 +66,15 @@ export const DemoModeBanner = observer(function DemoModeBanner() {
             Poke around freely — it’s a shared sandbox that resets now and then.
           </p>
         </div>
+        {/* Home just navigates to the marketing landing — it keeps the demo
+            session, so "Back to the demo" there brings the visitor right back. */}
+        <Link
+          to="/"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-body-sm-medium text-secondary transition-colors hover:bg-layer-1-hover hover:text-primary"
+        >
+          <Home className="size-3.5" />
+          Home
+        </Link>
         <button
           type="button"
           onClick={() => go("/sign-in")}
@@ -73,14 +83,6 @@ export const DemoModeBanner = observer(function DemoModeBanner() {
         >
           {leaving ? "…" : "Sign up free"}
           <ArrowRight className="size-3.5" />
-        </button>
-        <button
-          type="button"
-          onClick={() => go("/")}
-          disabled={leaving}
-          className="shrink-0 rounded-full px-3 py-1.5 text-body-sm-medium text-secondary transition-colors hover:bg-layer-1-hover hover:text-primary disabled:opacity-70"
-        >
-          Exit demo
         </button>
         <button
           type="button"
