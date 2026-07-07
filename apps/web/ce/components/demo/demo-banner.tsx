@@ -6,24 +6,29 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { Sparkles, ArrowRight, X } from "lucide-react";
+import { Sparkles, ArrowRight, Minus } from "lucide-react";
 // hooks
 import { useUser } from "@/hooks/store/user";
 // local
 import { isDemoUser, exitDemoTo } from "./demo.utils";
 
 /**
- * A floating banner shown only while the shared demo account is signed in. It
- * frames the session as a sandbox and gives two intuitive ways out — create a
- * real account, or return to the marketing home — so a demo visitor never has to
- * reason about "signing out" of an account that isn't theirs.
+ * A banner shown only while the shared demo account is signed in. It frames the
+ * session as a sandbox and gives two intuitive ways out — create a real account,
+ * or return to the marketing home — so a demo visitor never has to reason about
+ * "signing out" of an account that isn't theirs.
+ *
+ * The dismiss control MINIMISES to a small chip rather than disappearing, so
+ * there's always a visible route back to the demo controls (and to the home
+ * page). A solid surface background keeps the text readable over any content
+ * that scrolls behind it.
  */
 export const DemoModeBanner = observer(function DemoModeBanner() {
   const { data: currentUser } = useUser();
-  const [dismissed, setDismissed] = useState(false);
+  const [minimized, setMinimized] = useState(false);
   const [leaving, setLeaving] = useState(false);
 
-  if (!isDemoUser(currentUser) || dismissed) return null;
+  if (!isDemoUser(currentUser)) return null;
 
   const go = (destination: string) => {
     if (leaving) return;
@@ -31,9 +36,26 @@ export const DemoModeBanner = observer(function DemoModeBanner() {
     void exitDemoTo(destination);
   };
 
+  // Minimised: a small always-present chip that reopens the full banner.
+  if (minimized) {
+    return (
+      <button
+        type="button"
+        onClick={() => setMinimized(false)}
+        title="Demo mode — click for options"
+        className="fixed bottom-4 right-4 z-50 inline-flex items-center gap-2 rounded-full border border-accent-subtle bg-surface-2 px-3.5 py-2 text-body-sm-semibold text-primary shadow-glow-brand transition-transform hover:scale-[1.03]"
+      >
+        <span className="grid size-5 place-items-center rounded-full bg-accent-primary/20 text-accent-primary">
+          <Sparkles className="size-3" />
+        </span>
+        Demo mode
+      </button>
+    );
+  }
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4">
-      <div className="glass-2 pointer-events-auto flex w-full max-w-2xl items-center gap-3 rounded-full border border-accent-subtle px-4 py-2 shadow-glow-brand">
+      <div className="pointer-events-auto flex w-full max-w-2xl items-center gap-3 rounded-full border border-accent-subtle bg-surface-2 px-4 py-2 shadow-glow-brand">
         <span className="grid size-7 shrink-0 place-items-center rounded-full bg-accent-primary/20 text-accent-primary">
           <Sparkles className="size-4" />
         </span>
@@ -62,11 +84,12 @@ export const DemoModeBanner = observer(function DemoModeBanner() {
         </button>
         <button
           type="button"
-          onClick={() => setDismissed(true)}
-          aria-label="Hide"
+          onClick={() => setMinimized(true)}
+          aria-label="Minimize"
+          title="Minimize"
           className="grid size-6 shrink-0 place-items-center rounded-full text-tertiary transition-colors hover:bg-layer-1-hover hover:text-primary"
         >
-          <X className="size-3.5" />
+          <Minus className="size-3.5" />
         </button>
       </div>
     </div>
